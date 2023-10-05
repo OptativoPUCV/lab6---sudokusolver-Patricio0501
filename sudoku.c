@@ -43,10 +43,38 @@ void print_node(Node* n){
     printf("\n");
 }
 
-int is_valid(Node* n){
+int is_valid(Node* n) {
+    int VerificacionFila[9][10] = {0};    
+    int VerificacionColumna[9][10] = {0};   
+    int VerificacionSubMatriz[3][3][10] = {0}; 
 
+    int i, j;
+
+    for (i = 0; i < 9; i++) {
+        for (j = 0; j < 9; j++) {
+            int num = n->sudo[i][j];
+            
+            if (VerificacionFila[i][num] != 1) {
+                return 0; 
+            }
+            VerificacionFila[i][num] = 1;
+
+            if (VerificacionColumna[j][num] != 1) {
+                return 0;  
+            }
+            VerificacionColumna[j][num] = 1;
+
+            int CuadriculaFila = i / 3;
+            int CuadriculaColumna = j / 3;
+            if (VerificacionSubMatriz[CuadriculaFila][CuadriculaColumna][num] == 1) {
+                return 0;  
+            }
+            VerificacionSubMatriz[CuadriculaFila][CuadriculaColumna][num] = 1;
+        }
+    }
     return 1;
 }
+
 
 
 List* get_adj_nodes(Node* n) {
