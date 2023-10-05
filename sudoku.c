@@ -44,37 +44,36 @@ void print_node(Node* n){
 }
 
 int is_valid(Node* n) {
-    int VerificacionFila[9][10] = {0};          
-    int VerificacionColumna[9][10] = {0};    
-    int VerificacionSubMatriz[3][3][10] = {0}; 
-
+    // Verificar si todas las casillas están llenas y cumplen con las restricciones del Sudoku
+    int usedRows[9][10] = {0};
+    int usedCols[9][10] = {0};
+    int usedSubgrids[3][3][10] = {0};
+    
     int i, j;
-
     for (i = 0; i < 9; i++) {
         for (j = 0; j < 9; j++) {
             int num = n->sudo[i][j];
-
-            if (VerificacionFila[i][num] == 1) {
-                return 0;  
+            
+            // Verificar si la casilla está vacía
+            if (num == 0) {
+                return 0; // El Sudoku no está completo
             }
-            VerificacionFila[i][num] = 1;
-
-            if (VerificacionColumna[j][num] == 1) {
-                return 0; 
+            
+            // Verificar si el número cumple con las restricciones en filas, columnas y submatrices
+            if (usedRows[i][num] || usedCols[j][num] || usedSubgrids[i / 3][j / 3][num]) {
+                return 0; // El Sudoku no cumple con las restricciones
             }
-            VerificacionColumna[j][num] = 1;
-
-            int CuadriculaFila = i / 3;
-            int CuadriculaColumna = j / 3;
-            if (VerificacionSubMatriz[CuadriculaFila][CuadriculaColumna][num] == 1) {
-                return 0; 
-            }
-            VerificacionSubMatriz[CuadriculaFila][CuadriculaColumna][num] = 1;
+            
+            // Marcar el número como utilizado en filas, columnas y submatrices
+            usedRows[i][num] = 1;
+            usedCols[j][num] = 1;
+            usedSubgrids[i / 3][j / 3][num] = 1;
         }
     }
-
-    return 1;
+    
+    return 1; // El Sudoku está completo y cumple con las restricciones
 }
+
 
 List* get_adj_nodes(Node* n) {
     List* list = createList();
@@ -104,9 +103,47 @@ int is_final(Node* n){
     return 0;
 }
 
-Node* DFS(Node* initial, int* cont){
-  return NULL;
+Node* DFS(Node* n, int* cont) {
+    // Crear una pila e insertar el nodo inicial
+    Stack* S = createStack();
+    push(S, n);
+    *cont = 0; // Inicializar el contador de iteraciones
+
+    while (!is_empty(S)) {
+        (*cont)++; // Incrementar el contador en cada iteración
+
+        Node* current = top(S); // Obtener el nodo superior de la pila
+
+        // Verificar si el nodo actual corresponde a un estado final
+        if (is_valid(current)) {
+            // Liberar la memoria de la pila y retornar el nodo
+            free(S);
+            return current;
+        }
+
+        // Obtener la lista de nodos adyacentes al nodo actual
+        List* adj_nodes = get_adj_nodes(current);
+        Node* adj_node;
+
+        // Agregar los nodos adyacentes a la pila
+        while ((adj_node = front(adj_nodes)) != NULL) {
+            push(S, adj_node);
+            popFront(adj_nodes); // Eliminar el nodo de la lista (se traspasó al stack)
+        }
+
+        // Liberar la memoria usada por el nodo actual
+        free(current);
+
+        // Liberar la memoria de la lista de nodos adyacentes
+        clean(adj_nodes);
+    }
+
+    // Si no se encontró una solución, liberar la memoria de la pila y retornar NULL
+    free(S);
+    return NULL;
 }
+
+
 
 
 
