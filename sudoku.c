@@ -44,35 +44,47 @@ void print_node(Node* n){
 }
 
 int is_valid(Node* n) {
-    // Verificar si todas las casillas están llenas y cumplen con las restricciones del Sudoku
-    int usedRows[9][10] = {0};
-    int usedCols[9][10] = {0};
-    int usedSubgrids[3][3][10] = {0};
-    
-    int i, j;
+    int i, j, num;
+
     for (i = 0; i < 9; i++) {
+        int row_check[10] = {0};
+        int col_check[10] = {0};
+        
         for (j = 0; j < 9; j++) {
-            int num = n->sudo[i][j];
-            
-            // Verificar si la casilla está vacía
-            if (num == 0) {
-                return 0; // El Sudoku no está completo
+
+            num = n->sudo[i][j];
+            if (num != 0 && row_check[num] == 1) {
+                return 0; 
             }
-            
-            // Verificar si el número cumple con las restricciones en filas, columnas y submatrices
-            if (usedRows[i][num] || usedCols[j][num] || usedSubgrids[i / 3][j / 3][num]) {
-                return 0; // El Sudoku no cumple con las restricciones
+            row_check[num] = 1;
+
+            num = n->sudo[j][i];
+            if (num != 0 && col_check[num] == 1) {
+                return 0;
             }
-            
-            // Marcar el número como utilizado en filas, columnas y submatrices
-            usedRows[i][num] = 1;
-            usedCols[j][num] = 1;
-            usedSubgrids[i / 3][j / 3][num] = 1;
+            col_check[num] = 1;
         }
     }
-    
-    return 1; // El Sudoku está completo y cumple con las restricciones
+
+    for (i = 0; i < 9; i += 3) {
+        for (j = 0; j < 9; j += 3) {
+            int submatrix_check[10] = {0};
+            
+            for (int x = i; x < i + 3; x++) {
+                for (int y = j; y < j + 3; y++) {
+                    num = n->sudo[x][y];
+                    if (num != 0 && submatrix_check[num] == 1) {
+                        return 0;
+                    }
+                    submatrix_check[num] = 1;
+                }
+            }
+        }
+    }
+
+    return 1; 
 }
+
 
 
 List* get_adj_nodes(Node* n) {
