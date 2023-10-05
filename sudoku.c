@@ -54,7 +54,7 @@ int is_valid(Node* n) {
         for (j = 0; j < 9; j++) {
             int num = n->sudo[i][j];
             
-            if (VerificacionFila[i][num] != 1) {
+            if (VerificacionFila[i][num] == 1) {
                 return 0; 
             }
             VerificacionFila[i][num] = 1;
