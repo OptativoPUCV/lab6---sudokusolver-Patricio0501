@@ -80,7 +80,7 @@ int is_valid(Node* n) {
     // Si todas las restricciones se cumplen, el estado/nodo es válido
     return 1;
 }
-
+}
 
 List* get_adj_nodes(Node* n) {
     List* list = createList();
