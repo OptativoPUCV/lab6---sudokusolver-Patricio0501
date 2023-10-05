@@ -59,7 +59,7 @@ int is_valid(Node* n) {
             }
             VerificacionFila[i][num] = 1;
 
-            if (VerificacionColumna[j][num] != 1) {
+            if (VerificacionColumna[j][num] == 1) {
                 return 0;  
             }
             VerificacionColumna[j][num] = 1;
