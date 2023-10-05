@@ -44,7 +44,6 @@ void print_node(Node* n){
 }
 
 int is_valid(Node* n) {
-    int is_valid(Node* n) {
     int VerificacionFila[9][10] = {0};           // Array para verificar números en filas
     int VerificacionColumna[9][10] = {0};       // Array para verificar números en columnas
     int VerificacionSubMatriz[3][3][10] = {0};  // Array para verificar números en submatrices de 3x3
@@ -79,7 +78,6 @@ int is_valid(Node* n) {
 
     // Si todas las restricciones se cumplen, el estado/nodo es válido
     return 1;
-}
 }
 
 List* get_adj_nodes(Node* n) {
