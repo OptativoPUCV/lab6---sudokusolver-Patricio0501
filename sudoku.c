@@ -82,28 +82,21 @@ List* get_adj_nodes(Node* n) {
 
     for (i = 0; i < 9; i++) {
         for (j = 0; j < 9; j++) {
-            // Solo considerar casillas vacías (con valor 0)
             if (n->sudo[i][j] == 0) {
-                // Generar nodos adyacentes con valores del 1 al 9
+
                 for (int num = 1; num <= 9; num++) {
                     Node* new_node = copy(n);
                     new_node->sudo[i][j] = num;
-                    
-                    // Verificar si el nuevo nodo es válido
-                    if (is_valid(new_node)) {
-                        // Agregar el nodo válido a la lista
-                        pushBack(list, new_node);
-                    } else {
-                        // Si no es válido, liberar la memoria del nodo
-                        free(new_node);
-                    }
+                    pushBack(list, new_node);
                 }
+                return list;
             }
         }
     }
 
-    return list;
+    return list; 
 }
+
 
 
 
