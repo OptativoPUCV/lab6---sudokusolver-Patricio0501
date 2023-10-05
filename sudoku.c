@@ -44,26 +44,12 @@ void print_node(Node* n){
 }
 
 int is_valid(Node* n) {
-    int VerificacionFila[9][10];           // Array para verificar números en filas
-    int VerificacionColumna[9][10];       // Array para verificar números en columnas
-    int VerificacionSubMatriz[3][3][10];  // Array para verificar números en submatrices de 3x3
+    int is_valid(Node* n) {
+    int VerificacionFila[9][10] = {0};           // Array para verificar números en filas
+    int VerificacionColumna[9][10] = {0};       // Array para verificar números en columnas
+    int VerificacionSubMatriz[3][3][10] = {0};  // Array para verificar números en submatrices de 3x3
 
     int i, j;
-
-    for (i = 0; i < 9; i++) {
-        for (j = 1; j <= 9; j++) {
-            VerificacionFila[i][j] = 0;           // Inicializar a 0
-            VerificacionColumna[i][j] = 0;       // Inicializar a 0
-        }
-    }
-
-    for (i = 0; i < 3; i++) {
-        for (j = 0; j < 3; j++) {
-            for (int num = 1; num <= 9; num++) {
-                VerificacionSubMatriz[i][j][num] = 0;  // Inicializar a 0
-            }
-        }
-    }
 
     for (i = 0; i < 9; i++) {
         for (j = 0; j < 9; j++) {
@@ -73,11 +59,13 @@ int is_valid(Node* n) {
             if (VerificacionFila[i][num] == 1) {
                 return 0;  // El número se repite en la fila
             }
+            VerificacionFila[i][num] = 1;
             
             // Verificar si el número ya se ha utilizado en la misma columna
             if (VerificacionColumna[j][num] == 1) {
                 return 0;  // El número se repite en la columna
             }
+            VerificacionColumna[j][num] = 1;
             
             // Verificar si el número ya se ha utilizado en la misma submatriz de 3x3
             int CuadriculaFila = i / 3;
@@ -85,10 +73,6 @@ int is_valid(Node* n) {
             if (VerificacionSubMatriz[CuadriculaFila][CuadriculaColumna][num] == 1) {
                 return 0;  // El número se repite en la submatriz de 3x3
             }
-
-            // Marcar el número como utilizado en la fila, columna y submatriz
-            VerificacionFila[i][num] = 1;
-            VerificacionColumna[j][num] = 1;
             VerificacionSubMatriz[CuadriculaFila][CuadriculaColumna][num] = 1;
         }
     }
@@ -96,6 +80,7 @@ int is_valid(Node* n) {
     // Si todas las restricciones se cumplen, el estado/nodo es válido
     return 1;
 }
+
 
 List* get_adj_nodes(Node* n) {
     List* list = createList();
