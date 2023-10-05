@@ -44,38 +44,43 @@ void print_node(Node* n){
 }
 
 int is_valid(Node* n) {
-    int VerificacionFila[9][10] = {0}; 
-    int VerificacionColumna[9][10] = {0};     
-    int VerificacionSubMatriz[3][3][10] = {0};  
+    int VerificacionFila[9][10] = {0};           // Array para verificar números en filas
+    int VerificacionColumna[9][10] = {0};       // Array para verificar números en columnas
+    int VerificacionSubMatriz[3][3][10] = {0};  // Array para verificar números en submatrices de 3x3
+
     int i, j;
 
     for (i = 0; i < 9; i++) {
         for (j = 0; j < 9; j++) {
             int num = n->sudo[i][j];
             
+            // Verificar si el número ya se ha utilizado en la misma fila
             if (VerificacionFila[i][num] == 1) {
-                return 0;  
-            }
-    
-            if (VerificacionColumna[j][num] == 1) {
-                return 0;  
+                return 0;  // El número se repite en la fila
             }
             
+            // Verificar si el número ya se ha utilizado en la misma columna
+            if (VerificacionColumna[j][num] == 1) {
+                return 0;  // El número se repite en la columna
+            }
+            
+            // Verificar si el número ya se ha utilizado en la misma submatriz de 3x3
             int CuadriculaFila = i / 3;
             int CuadriculaColumna = j / 3;
             if (VerificacionSubMatriz[CuadriculaFila][CuadriculaColumna][num] == 1) {
-                return 0;  
+                return 0;  // El número se repite en la submatriz de 3x3
             }
 
+            // Marcar el número como utilizado en la fila, columna y submatriz
             VerificacionFila[i][num] = 1;
             VerificacionColumna[j][num] = 1;
             VerificacionSubMatriz[CuadriculaFila][CuadriculaColumna][num] = 1;
         }
     }
+
+    // Si todas las restricciones se cumplen, el estado/nodo es válido
     return 1;
 }
-
-
 
 
 List* get_adj_nodes(Node* n) {
