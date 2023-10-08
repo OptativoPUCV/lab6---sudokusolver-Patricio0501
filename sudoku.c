@@ -130,45 +130,38 @@ int is_final(Node* n) {
 
 
 Node* DFS(Node* n, int* cont) {
-    // Crear una pila e insertar el nodo inicial
-    Stack* S = createStack();
-    push(S, n);
-    *cont = 0; // Inicializar el contador de iteraciones
+    Stack* stack = createStack();
+    push(stack, n);
 
-    while (!is_empty(S)) {
-        (*cont)++; // Incrementar el contador en cada iteración
+    while (!is_empty(stack)) { 
+        (*cont)++; 
 
-        Node* current = top(S); // Obtener el nodo superior de la pila
+        Node* current = top(stack);
+        pop(stack); 
 
-        // Verificar si el nodo actual corresponde a un estado final
-        if (is_valid(current)) {
-            // Liberar la memoria de la pila y retornar el nodo
-            free(S);
-            return current;
+        if (is_final(current)) { 
+            free(stack);
+            return current; 
         }
 
-        // Obtener la lista de nodos adyacentes al nodo actual
-        List* adj_nodes = get_adj_nodes(current);
-        Node* adj_node;
+        List* adj_nodes = get_adj_nodes(current); 
+        Node* next;
 
-        // Agregar los nodos adyacentes a la pila
-        while ((adj_node = front(adj_nodes)) != NULL) {
-            push(S, adj_node);
-            popFront(adj_nodes); // Eliminar el nodo de la lista (se traspasó al stack)
+        while ((next = next(adj_nodes)) != NULL) {
+            if (is_valid(next)) {
+                push(stack, next);
+            } else {
+                free(next);
+            }
         }
 
-        // Liberar la memoria usada por el nodo actual
-        free(current);
-
-        // Liberar la memoria de la lista de nodos adyacentes
-        clean(adj_nodes);
+        clean(adj_nodes); 
     }
 
-    // Si no se encontró una solución, liberar la memoria de la pila y retornar NULL
-    free(S);
+    free(stack);
+
     return NULL;
 }
-
 
 
 
