@@ -136,3 +136,16 @@ sudoku.c:148:15: note: declared here
       |               ^~~~
 Compilation failed
 c408dca
+Sun 08 Oct 2023 05:34:31 PM UTC: 
+ sudoku.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+In file included from test.c:5:
+sudoku.c: In function ‘DFS’:
+sudoku.c:155:20: error: called object ‘next’ is not a function or function pointer
+  155 |             next = next(adj_nodes);
+      |                    ^~~~
+sudoku.c:147:15: note: declared here
+  147 |         Node* next = front(adj_nodes);
+      |               ^~~~
+Compilation failed
+7b8d20e
